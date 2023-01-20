@@ -1,14 +1,20 @@
+
+
+
+
 library(keras)
 library(dplyr)
+library(ggplot2)
+library(lattice)
 library(caret)
 
-df <- read.csv('mount/data.csv')
+df <- read.csv('data.csv')
 df$diagnosis<-ifelse(df$diagnosis=="M",1,0)
 
 index <- createDataPartition(df$diagnosis, p=0.8, list=FALSE)
 
-training <- df[index,]
-testing <- df[-index,]
+training <- df[index,-c(1,33)]
+testing <- df[-index,-c(1,33)]
 
 X_train <- training %>% 
   select(-diagnosis) %>% 
@@ -47,5 +53,4 @@ model %>% evaluate(X_test, y_test)
 
 predictions <- model %>% predict(X_test)
 
-
-
+View(predictions)
